@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  # 数据库服务
+  db:
+    image: mysql:8.0
+    container_name: garbage_db
+    restart: always
+    environment:
+      # 设置 root 用户密码
+      MYSQL_ROOT_PASSWORD: rootpassword
+      # 创建默认数据库
+      MYSQL_DATABASE: garbage_classification
+    volumes:
+      # 数据持久化挂载
+      - db_data:/var/lib/mysql
+    ports:
+      # 映射端口 (可选，方便本地调试)
+      - "3306:3306"
+
+  # 后端服务
+  backend:
+    build: ./backend
+    container_name: garbage_backend
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "8000:8000"
+    environment:
+      # 覆盖 .env 中的数据库连接配置
+      # 注意：在 docker 网络中，通过服务名 'db' 访问数据库
+      DATABASE_URL: mysql+pymysql://root:rootpassword@db:3306/garbage_classification
+      # 可以在这里添加其他环境变量，或使用 env_file
+
+  # 前端服务
+  frontend:
+    build: ./frontend
+    container_name: garbage_frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      # 将容器的 80 端口映射到宿主机的 8080 端口
+      - "8080:80"
+
+volumes:
+  db_data:
