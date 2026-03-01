@@ -48,14 +48,37 @@
 ```bash
 git clone [https://github.com/你的用户名/你的仓库名.git](https://github.com/你的用户名/你的仓库名.git)
 cd 你的项目目录
-### 3  配置环境变量
+```
+3. 配置环境变量
+在项目根目录创建 .env 文件，并填入你的专属配置（严禁将真实的 API Key 提交到代码仓库）：
+
+```bash
+# 数据库配置
+MYSQL_ROOT_PASSWORD=your_secure_password
+MYSQL_DATABASE=garbage_db
+
+# 大模型 API 密钥 (前往阿里云百炼平台获取)
+QWEN_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxx
+
+# 服务端口配置
+FRONTEND_PORT=80
+BACKEND_PORT=8000
+```
 
 4. 一键容器化部署
 执行以下命令，Docker 将自动拉取依赖、构建镜像并启动前后端及数据库容器：
-
-Bash
+```bash
 docker-compose up -d --build
+```
 5. 访问服务
 用户前台页面: http://localhost:80
 
 后台接口文档 (Swagger UI): http://localhost:8000/docs
+
+<img width="868" height="640" alt="image" src="https://github.com/user-attachments/assets/21bed20a-ae52-4573-8f8b-d257202bc918" />
+
+<img width="1141" height="1189" alt="image" src="https://github.com/user-attachments/assets/fee2ccfa-5759-4ec2-8916-75a5ff9c2e60" />
+
+<img width="1238" height="859" alt="image" src="https://github.com/user-attachments/assets/091439aa-fb91-43ec-a9e3-b43d1fb486c2" />
+
+
