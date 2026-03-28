@@ -21,6 +21,9 @@ RUN npm run build
 # 使用 nginx:alpine 作为生产环境镜像
 FROM nginx:alpine AS production-stage
 
+# 复制自定义的 Nginx 配置文件
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 # 将构建好的 dist 目录复制到 nginx 的默认静态文件目录
 COPY --from=build-stage /app/dist /usr/share/nginx/html
 
