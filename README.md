@@ -1,84 +1,107 @@
-# 🍃 基于 Qwen 大模型的智能垃圾分类系统
+# 垃圾分类系统 (Trash Classification System)
 
-![Vue.js](https://img.shields.io/badge/Vue.js-3.x-4FC08D?style=flat&logo=vue.js)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?style=flat&logo=fastapi)
-![Docker](https://img.shields.io/badge/Docker-Supported-2496ED?style=flat&logo=docker)
-![Qwen LLM](https://img.shields.io/badge/AI_Model-Qwen_Turbo-blueviolet?style=flat)
-![License](https://img.shields.io/badge/License-MIT-green.svg)
+基于 Qwen (通义千问) 大模型的垃圾分类前后端分离项目。支持通过 AI 智能识别垃圾类别，并提供完整的用户注册、登录、意见反馈、分类字典查询及后台管理功能。
 
-## 📖 项目简介
+---
 
-本项目是一个基于 **B/S 架构** 与 **大语言模型（LLM）** 深度结合的智能环保服务平台。系统旨在解决传统垃圾分类查询中存在的“口语化描述识别率低、复合型垃圾难以拆解”等痛点。
+## 🚀 快速上手 (How to Run)
 
-通过接入**阿里云通义千问（Qwen）大模型**，本系统赋予了原本冷冰冰的知识库以强大的语义理解与逻辑推理能力。用户只需用日常自然语言提问（如：“没喝完的珍珠奶茶连着塑料杯怎么扔？”），系统即可智能拆解成分并给出精准的投放建议。
+如果您刚刚克隆了此仓库，希望在本地机器上把这个项目跑起来，请严格按照以下步骤进行配置。
 
-系统采用现代化全栈技术开发，UI 视觉风格采用温暖治愈的浅色系，并全面支持 **Docker 容器化一键部署**，真正实现“一次构建，到处运行”。
+### 0. 准备环境 (Prerequisites)
 
-## ✨ 核心特性
+请确保你的电脑上已经安装了：
+- **Python 3.9+** (建议使用 Conda 或 venv 创建虚拟环境)
+- **Node.js** (推荐v16+版本，包含 npm)
+- **MySQL 8.0+** 数据库服务
 
-### 🧑‍💻 用户端 (Client)
-- **🤖 AI 智能问答**：基于 Qwen 大模型，支持长文本、口语化、复杂语境的垃圾分类智能推理。
-- **📚 兜底检索与图鉴**：内置本地高频垃圾分类词库与四大分类（干/湿/可回收/有害）标准图鉴，断网或 API 异常时无缝降级。
-- **📰 环保资讯社区**：浏览最新环保政策、科普文章。
-- **📊 历史追溯与反馈**：自动记录问答历史，支持针对 AI 幻觉的纠错反馈闭环。
-- **🎨 社交分享**：支持一键生成专属环保科普图文海报并保存到相册/分享。
+---
 
-### 🛡️ 管理员端 (Admin)
-- **📈 可视化监控仪表盘**：全景监控注册用户量、API 调用频次、热门搜索垃圾词云。
-- **👥 用户全生命周期管理**：账号重置、状态封禁与解封。
-- **📝 动态知识库维护**：后台增删改查本地标准词库与环保科普资讯。
-- **🔄 AI 语料闭环与系统日志**：审核用户纠错反馈，积累调优提示词（Prompt）语料；实时查看底层运行日志保障系统高可用。
-
-## 🛠️ 技术栈选型
-
-| 模块 | 技术选型 | 说明 |
-| :--- | :--- | :--- |
-| **前端 (Frontend)** | Vue 3 + Vite + Pinia + Vue Router + Axios | 采用组合式 API，单页面应用 (SPA)，温暖治愈系浅色 UI |
-| **后端 (Backend)** | Python 3.10+ + FastAPI + Pydantic | 基于 ASGI 标准的高性能异步并发框架 |
-| **数据库 (Database)** | MySQL 8.0 + SQLAlchemy (ORM) | 持久化存储，采用连接池与预编译防注入 |
-| **AI 引擎 (AI Model)** | Aliyun DashScope SDK (Qwen) | 通义千问大语言模型 API |
-| **部署 (Deployment)** | Docker + Docker Compose | 容器化隔离运行环境，极致简化部署流程 |
-
-## 🚀 快速启动 (Quick Start)
-
-### 1. 环境准备
-请确保你的宿主机已安装 [Docker](https://www.docker.com/) 和 [Docker Compose](https://docs.docker.com/compose/)。
-
-### 2. 克隆项目
-```bash
-git clone [https://github.com/你的用户名/你的仓库名.git](https://github.com/你的用户名/你的仓库名.git)
-cd 你的项目目录
-```
-3. 配置环境变量
-在项目根目录创建 .env 文件，并填入你的专属配置（严禁将真实的 API Key 提交到代码仓库）：
+### 1. 克隆项目 (Clone Repository)
 
 ```bash
-# 数据库配置
-MYSQL_ROOT_PASSWORD=your_secure_password
-MYSQL_DATABASE=garbage_db
-
-# 大模型 API 密钥 (前往阿里云百炼平台获取)
-QWEN_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxx
-
-# 服务端口配置
-FRONTEND_PORT=80
-BACKEND_PORT=8000
+git clone https://github.com/yeliheng-010/QwenTrashClassification.git
+cd QwenTrashClassification
 ```
 
-4. 一键容器化部署
-执行以下命令，Docker 将自动拉取依赖、构建镜像并启动前后端及数据库容器：
+---
+
+### 2. 数据库准备 (Database Setup)
+
+请在你的 MySQL 中新建一个空数据库（比如叫 `garbage_classification`），你可以使用 Navicat 或者命令行创建：
+```sql
+CREATE DATABASE garbage_classification DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
+
+---
+
+### 3. 配置与启动后端 (Backend Setup & Run)
+
+后端是基于 **FastAPI + SQLAlchemy** 构建的。
+
+#### 3.1 配置文件 (`.env`)
+进入到 `backend` 目录下：
 ```bash
-docker-compose up -d --build
+cd backend
 ```
-5. 访问服务
-用户前台页面: http://localhost:80
+将项目的配置模板复制一份，并重命名为正式的 `.env`。**这个文件必须手动创建！**
+```bash
+cp .env.example .env
+```
+用编辑器打开刚创建的 `.env` 文件，完善你的配置信息：
+- `DATABASE_URL`: 修改为你的对应 MySQL 用户名、密码和第2步中创建的数据库名称。例如 `mysql+pymysql://root:123456@127.0.0.1:3306/garbage_classification`
+- `SILICONFLOW_API_KEY`: 填入你的硅基流动 (SiliconFlow) 大模型 API Key。如果你想要测试垃圾识别功能，这个配置必须填写。
+- `SECRET_KEY`: 这是用来加密 JWT Token 的密钥，可以随便填一串复杂的字母+数字组合。
 
-后台接口文档 (Swagger UI): http://localhost:8000/docs
+#### 3.2 安装依赖
+如果你使用 conda，可以新建或激活虚拟环境后安装依赖（或者根据你的习惯直接安装）：
+```bash
+pip install -r requirements.txt
+```
 
-<img width="868" height="640" alt="image" src="https://github.com/user-attachments/assets/21bed20a-ae52-4573-8f8b-d257202bc918" />
+#### 3.3 启动后端服务器
+依赖安装完成后，启动服务：
+```bash
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+```
+*💡 **特别提示**：如果在应用启动时数据库为空，后端会自动建表，并默默写入一个默认密码：**`admin123`**，默认账号：**`superadmin`** 的超级管理员账号，供您直接登录后台体验完整功能！*
 
-<img width="1141" height="1189" alt="image" src="https://github.com/user-attachments/assets/fee2ccfa-5759-4ec2-8916-75a5ff9c2e60" />
+✅ 当终端打印出 `Application startup complete.`，代表后端在 `http://127.0.0.1:8000` 运行成功了！
 
-<img width="1238" height="859" alt="image" src="https://github.com/user-attachments/assets/091439aa-fb91-43ec-a9e3-b43d1fb486c2" />
+---
 
+### 4. 启动前端 (Frontend Setup & Run)
 
+前端基于 **Vue 3 + Vite + Element Plus** 开发，如果需要与后端交互请**另开一个终端窗口**。
+
+#### 4.1 安装依赖包
+从项目根目录进入到 `frontend` 文件夹：
+```bash
+cd frontend
+npm install
+```
+
+#### 4.2 启动本地开发服务环境
+```bash
+npm run dev
+```
+
+✅ 看到包含 `http://localhost:5173/` 或者 `http://127.0.0.1:5173/` 网址的日志后，就能直接在浏览器里面打开对应的地址体验完整的项目功能啦！🚀
+
+---
+
+## 🐳 Docker 一键部署体验版 (Docker Compose)
+
+如果你熟悉 Docker，不想在本地处理 Python 和 Node.js 环境，可以使用写好的 `docker-compose.yml` 快速部署。
+> **前提**: 必须在本地 `backend` 目录下手动创建好完全正常的 `.env` 配置（参照 3.1 的内容），否则后端容器会由于缺少数据库密码信息导致反复重启报错。
+
+1. 修改后端环境配置并保存 `.env`。
+2. 在项目根目录（带有 `docker-compose.yml` 的那一级），运行构建：
+   ```bash
+   docker-compose up -d --build
+   ```
+3. 构建完成后，您能通过 `http://localhost:8080/` 访问网页前端（前端映射为了 `8080`），通过 `http://localhost:8000/docs` 查看后端接口文档。
+
+---
+
+如果遇到项目重启报错，或者启动后访问报错 500、验证失败，请第一时间检查后端 `.env` 下的 `DATABASE_URL` MySQL 用户名密码配置是否完全符合你本地这台电脑的实际环境。
