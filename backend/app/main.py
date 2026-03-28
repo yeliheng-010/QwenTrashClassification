@@ -17,6 +17,30 @@ async def lifespan(app: FastAPI):
     # 启动时执行
     print("应用正在启动...")
     logger.info("应用正在启动...")
+
+    # 初始化默认超级管理员
+    from .database import SessionLocal
+    from .routers.user import get_password_hash
+    from . import schemas
+    db = SessionLocal()
+    try:
+        admin_user = db.query(models.User).filter(models.User.username == "superadmin").first()
+        if not admin_user:
+            hashed_pw = get_password_hash("admin123")
+            new_admin = models.User(
+                username="superadmin",
+                password_hash=hashed_pw,
+                role=schemas.UserRole.ADMIN,
+                is_admin=True
+            )
+            db.add(new_admin)
+            db.commit()
+            logger.info("默认超级管理员账号 superadmin 已初始化完毕")
+    except Exception as e:
+        logger.error(f"初始化超级管理员账号时出错: {e}")
+    finally:
+        db.close()
+
     yield
     # 关闭时执行
     print("应用正在关闭...")

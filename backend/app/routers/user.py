@@ -244,10 +244,16 @@ def login_for_access_token(user_login: schemas.UserLogin, db: Session = Depends(
     )
 
     # 验证用户是否存在以及密码是否正确
-    if not user or not verify_password(user_login.password, user.password_hash):
+    if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="用户名或密码错误",
+            detail="账号不存在",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    if not verify_password(user_login.password, user.password_hash):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="密码错误",
             headers={"WWW-Authenticate": "Bearer"},
         )
 

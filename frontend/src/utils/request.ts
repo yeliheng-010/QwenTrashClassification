@@ -44,8 +44,9 @@ service.interceptors.response.use(
         // 如果是 401 未授权，可以在这里处理登出逻辑
         if (error.response && error.response.status === 401) {
             localStorage.removeItem('token')
-            // router.push('/login') // 这里的 router 需要引入，或者并在组件层处理
-            window.location.href = '/login'
+            if (window.location.pathname !== '/login') {
+                window.location.href = '/login'
+            }
         }
 
         return Promise.reject(error)

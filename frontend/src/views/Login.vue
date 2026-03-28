@@ -45,6 +45,7 @@ const submitForm = async () => {
             localStorage.setItem('token', res.access_token)
             localStorage.setItem('username', res.username)
             localStorage.setItem('is_admin', String(res.is_admin))
+            ElMessage.success('登录成功')
             router.push('/')
     } catch (error) {
         // 错误已经在 request.ts 中统一处理了
